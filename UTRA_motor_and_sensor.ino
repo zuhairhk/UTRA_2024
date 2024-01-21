@@ -12,6 +12,8 @@
 #define leftSensor A0
 #define rightSensor A1
 
+#define THRESHOLD 470
+
 float leftVal = 0;
 float rightVal = 0;
 float duration, distance;
@@ -74,6 +76,14 @@ void off() {
   digitalWrite(motorB2, LOW);
 }
 
+// check all degrees and then take the shortest path
+// put movements in a stack pop off then go in reverse
+void put_it_in_reverse_terry() {
+  off();
+  left();
+ // delay(5); // MAYBE CHANGE FOR TURN DISTANCE
+}
+
 void loop() {
   // digitalWrite(enableA, HIGH);
   //    forward();
@@ -106,37 +116,50 @@ void loop() {
   rightVal = analogRead(rightSensor);
   //Dig = digitalRead(pinDig);
 
-  if (rightVal >= 375 && leftVal < 375) {
-    digitalWrite(red, HIGH);
-    digitalWrite(green, LOW);
-  }
-  else if (leftVal >= 375 && rightVal < 375) {
-    digitalWrite(green, HIGH);
-    digitalWrite(red, LOW);
-  }
-  else if (rightVal >= 375 && leftVal >= 375) {
-    digitalWrite(green, HIGH);
-    digitalWrite(red, HIGH);
-  }
-  else {
-    digitalWrite(green, LOW);
-    digitalWrite(red, LOW);
-  }
+//  digitalWrite(trigPin, LOW);
+//  delayMicroseconds(2);
+//
+//  digitalWrite(trigPin, HIGH);
+//  delayMicroseconds(10);
+//  digitalWrite(trigPin, LOW);
+//
+//  duration = pulseIn(echoPin, HIGH);
+//
+//  distance = (duration * 0.0343) / 2; //d=s/t, 0.0343 is speed of sound. 2 because wave travles to and back.
 
-  //  digitalWrite(trigPin, LOW);
-  //  delayMicroseconds(2);
-  //
-  //  digitalWrite(trigPin, HIGH);
-  //  delayMicroseconds(10);
-  //  digitalWrite(trigPin, LOW);
-  //
-  //  duration = pulseIn(echoPin, HIGH);
-  //
-  //  distance = (duration * 0.0343) / 2; //d=s/t, 0.0343 is speed of sound. 2 because wave travles to and back.
-  //
-  //  Serial.print("Distance: ");
-  //  Serial.println(distance);
-  //  //delay(25);
+  if (rightVal >= THRESHOLD && leftVal < THRESHOLD) {
+    digitalWrite(red, HIGH);
+    digitalWrite(green, LOW);
+    right();
+  }
+  else if (leftVal >= THRESHOLD && rightVal < THRESHOLD) {
+    digitalWrite(green, HIGH);
+    digitalWrite(red, LOW);
+    left();
+  }
+  else if (rightVal >= THRESHOLD && leftVal >= THRESHOLD) {
+    digitalWrite(green, HIGH);
+    digitalWrite(red, HIGH);
+    forward();
+  }
+//  else if (rightVal < THRESHOLD && leftVal < THRESHOLD)
+//    //put_it_in_reverse_terry();
+//    forward();
+//  else {
+//    digitalWrite(green, LOW);
+//    digitalWrite(red, LOW);
+//    off();
+//  }
+
+
+
+//  Serial.print("Distance: ");
+//  Serial.println(distance);
+//
+//  if (distance <= 10) {
+//    put_it_in_reverse_terry();
+//  }
+  //delay(25);
 
 
 
