@@ -81,9 +81,9 @@ void off() {
 // put movements in a stack pop off then go in reverse
 void put_it_in_reverse_terry() {
   off();
-  left();
-  left();
-  // delay(5); // MAYBE CHANGE FOR TURN DISTANCE
+  left();      // initiate the left turn
+  delay(900);  // adjust this delay to make a 180-degree turn (in milliseconds)
+  off();       // stop turning
 }
 
 void loop() {
@@ -102,8 +102,6 @@ void loop() {
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
   distance = (duration * 0.0343) / 2;  //d=s/t, 0.0343 is speed of sound. 2 because wave travles to and back.
-  duration = pulseIn(echoPin, HIGH, 10000);
-  distance = (duration * 0.0343) / 2;
 
   // TURN AROUND (360) IF NO PATH DETECTED FOR MORE THAN 3 SECONDS
   // if (millis() - lastPathDetectionTime >= TURN_AROUND_INTERVAL) {
@@ -160,7 +158,7 @@ void loop() {
   //   digitalWrite(red, LOW);
   // }
 
-  //  if (distance <= 10) {
-  //    put_it_in_reverse_terry();
-  //  }
+  if (distance <= 10) {
+    put_it_in_reverse_terry();
+  }
 }
