@@ -5,7 +5,7 @@
 #define motorB1 6
 #define motorB2 7
 #define green 3
-#define red 4
+#define red 13
 #define trigPin 11
 #define echoPin 12
 
@@ -76,18 +76,18 @@ void off() {
 
 void loop() {
   // digitalWrite(enableA, HIGH);
-//    forward();
-//    delay(1000);
-//    left();
-//    delay(1000);
-//    backward();
-//    delay(1000);
-//    right();
-//    delay(1000);
-    //  digitalWrite(green, HIGH);
-    //  digitalWrite(red, HIGH);
-//    digitalWrite(green, HIGH);
-//    digitalWrite(red, HIGH);
+  //    forward();
+  //    delay(1000);
+  //    left();
+  //    delay(1000);
+  //    backward();
+  //    delay(1000);
+  //    right();
+  //    delay(1000);
+  //  digitalWrite(green, HIGH);
+  //  digitalWrite(red, HIGH);
+  //    digitalWrite(green, HIGH);
+  //    digitalWrite(red, HIGH);
   //  //
   //  //  Serial.println(digitalRead(motorA1));
   //  //  Serial.println(digitalRead(motorA2));
@@ -106,31 +106,37 @@ void loop() {
   rightVal = analogRead(rightSensor);
   //Dig = digitalRead(pinDig);
 
-  if (rightVal >= 250) {
+  if (rightVal >= 375 && leftVal < 375) {
     digitalWrite(red, HIGH);
-  }
-  if (leftVal >= 100) {
-    digitalWrite(green, HIGH);
-  }
-  else {
-    digitalWrite(red, LOW);
     digitalWrite(green, LOW);
   }
+  else if (leftVal >= 375 && rightVal < 375) {
+    digitalWrite(green, HIGH);
+    digitalWrite(red, LOW);
+  }
+  else if (rightVal >= 375 && leftVal >= 375) {
+    digitalWrite(green, HIGH);
+    digitalWrite(red, HIGH);
+  }
+  else {
+    digitalWrite(green, LOW);
+    digitalWrite(red, LOW);
+  }
 
-//  digitalWrite(trigPin, LOW);
-//  delayMicroseconds(2);
-//
-//  digitalWrite(trigPin, HIGH);
-//  delayMicroseconds(10);
-//  digitalWrite(trigPin, LOW);
-//
-//  duration = pulseIn(echoPin, HIGH);
-//
-//  distance = (duration * 0.0343) / 2; //d=s/t, 0.0343 is speed of sound. 2 because wave travles to and back.
-//
-//  Serial.print("Distance: ");
-//  Serial.println(distance);
-//  //delay(25);
+  //  digitalWrite(trigPin, LOW);
+  //  delayMicroseconds(2);
+  //
+  //  digitalWrite(trigPin, HIGH);
+  //  delayMicroseconds(10);
+  //  digitalWrite(trigPin, LOW);
+  //
+  //  duration = pulseIn(echoPin, HIGH);
+  //
+  //  distance = (duration * 0.0343) / 2; //d=s/t, 0.0343 is speed of sound. 2 because wave travles to and back.
+  //
+  //  Serial.print("Distance: ");
+  //  Serial.println(distance);
+  //  //delay(25);
 
 
 
