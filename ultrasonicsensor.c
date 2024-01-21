@@ -1,7 +1,7 @@
-#define trigPin 9
-#define echoPin 10
-#define red 7
-#define green 6
+#define trigPin 11
+#define echoPin 12
+#define red 13
+#define green 3
 
 float duration, distance;
 
