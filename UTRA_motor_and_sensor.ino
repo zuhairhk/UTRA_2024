@@ -131,32 +131,34 @@ void loop() {
   //
   //  distance = (duration * 0.0343) / 2; //d=s/t, 0.0343 is speed of sound. 2 because wave travles to and back.
 
+  // TAKE A RIGHT TURN
   if (rightVal >= THRESHOLD && leftVal < THRESHOLD) {
     digitalWrite(red, HIGH);
     digitalWrite(green, LOW);
-
-    while (leftVal < THRESHOLD) {
-      leftVal = analogRead(leftSensor);
-      left();
-    }
-    right();
-    delay(10);
-
-  } else if (leftVal >= THRESHOLD && rightVal < THRESHOLD) {
-    digitalWrite(green, HIGH);
-    digitalWrite(red, LOW);
-
-    while (rightVal < THRESHOLD) {
-      rightVal = analogRead(rightSensor);
-      right();
-    }
     left();
     delay(10);
-
-
-  } else if (rightVal <= THRESHOLD && leftVal <= THRESHOLD) {
+    while (rightVal >= THRESHOLD) {
+      rightVal = analogRead(rightSensor);
+      delay(10);
+    }
+    off();
+  }
+  // TAKE A LEFT TURN
+  else if (leftVal >= THRESHOLD && rightVal < THRESHOLD) {
     digitalWrite(green, HIGH);
-    digitalWrite(red, HIGH);
+    digitalWrite(red, LOW);
+    right();
+    delay(10);
+    while (leftVal >= THRESHOLD) {
+      leftVal = analogRead(leftSensor);
+      delay(10);
+    }
+    off();
+  }
+  // GO STRAIGHT
+  else if (rightVal <= THRESHOLD && leftVal <= THRESHOLD) {
+    digitalWrite(green, LOW);
+    digitalWrite(red, LOW);
     forward();
   }
   //  else if (rightVal < THRESHOLD && leftVal < THRESHOLD)
