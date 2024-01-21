@@ -12,7 +12,8 @@
 #define leftSensor A0
 #define rightSensor A1
 
-#define THRESHOLD 470
+//#define THRESHOLD 470
+#define THRESHOLD 820
 
 float leftVal = 0;
 float rightVal = 0;
@@ -130,14 +131,16 @@ void loop() {
   if (rightVal >= THRESHOLD && leftVal < THRESHOLD) {
     digitalWrite(red, HIGH);
     digitalWrite(green, LOW);
-    right();
+    left();
+    delay(10);
   }
   else if (leftVal >= THRESHOLD && rightVal < THRESHOLD) {
     digitalWrite(green, HIGH);
     digitalWrite(red, LOW);
-    left();
+    right();
+    delay(10);
   }
-  else if (rightVal >= THRESHOLD && leftVal >= THRESHOLD) {
+  else if (rightVal <= THRESHOLD && leftVal <= THRESHOLD) {
     digitalWrite(green, HIGH);
     digitalWrite(red, HIGH);
     forward();
