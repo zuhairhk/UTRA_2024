@@ -1,19 +1,18 @@
-#define enableA 9
-#define motorA1 4
-#define motorA2 5
-#define enableB 10
-#define motorB1 6
-#define motorB2 7
-#define green 3
-#define red 13
-#define trigPin 11
-#define echoPin 12
+#define enableA     9
+#define motorA1     4
+#define motorA2     5
+#define enableB     10
+#define motorB1     6
+#define motorB2     7
+#define green       3
+#define red         13
+#define trigPin     11
+#define echoPin     12
 
-#define leftSensor A0
+#define leftSensor  A0
 #define rightSensor A1
 
-//#define THRESHOLD 470
-#define THRESHOLD 820
+#define THRESHOLD   820
 
 float leftVal = 0;
 float rightVal = 0;
@@ -81,16 +80,16 @@ void off() {
 // put movements in a stack pop off then go in reverse
 void put_it_in_reverse_terry() {
   off();
-  left();      // initiate the left turn
-  delay(1350);  // adjust this delay to make a 180-degree turn (in milliseconds)
+  right();      // initiate the left turn
+  delay(850);  // adjust this delay to make a 180-degree turn (in milliseconds)
   off();       // stop turning
 }
 
 void loop() {
-  Serial.print("Left Val: ");
-  Serial.println(leftVal);
-  Serial.print("Right Val: ");
-  Serial.println(rightVal);
+  // Serial.print("Left Val: ");
+  // Serial.println(leftVal);
+  // Serial.print("Right Val: ");
+  // Serial.println(rightVal);
 
   leftVal = analogRead(leftSensor);
   rightVal = analogRead(rightSensor);
@@ -101,18 +100,16 @@ void loop() {
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
-  distance = (duration * 0.0343) / 2;  //d=s/t, 0.0343 is speed of sound. 2 because wave travles to and back.
+  distance = (duration * 0.0343) / 2;
 
-  // TURN AROUND (360) IF NO PATH DETECTED FOR MORE THAN 3 SECONDS
-  // if (millis() - lastPathDetectionTime >= TURN_AROUND_INTERVAL) {
-  //   left();
-  //   delay(1000);  // Adjust the delay based on the time needed for a 360-degree turn
-  //   off();
-  //   lastPathDetectionTime = millis();  // Reset the timer after the turn around
-  // }
-
+  // GO STRAIGHT
+  if (rightVal <= THRESHOLD && leftVal <= THRESHOLD) {
+    digitalWrite(green, LOW);
+    digitalWrite(red, LOW);
+    forward();
+  }
   // TAKE A RIGHT TURN
-  if (rightVal >= THRESHOLD && leftVal < THRESHOLD) {
+  else if (rightVal >= THRESHOLD && leftVal < THRESHOLD) {
     digitalWrite(green, HIGH);
     digitalWrite(red, LOW);
     left();
@@ -121,8 +118,6 @@ void loop() {
       rightVal = analogRead(rightSensor);
       delay(10);
     }
-    off();
-    //lastPathDetectionTime = millis();  // Update the last path detection time
   }
   // TAKE A LEFT TURN
   else if (leftVal >= THRESHOLD && rightVal < THRESHOLD) {
@@ -134,39 +129,7 @@ void loop() {
       leftVal = analogRead(leftSensor);
       delay(10);
     }
-    off();
-    //lastPathDetectionTime = millis();  // Update the last path detection time
   }
-  else if (rightVal >= THRESHOLD && leftVal >= THRESHOLD) {
-    digitalWrite(red, HIGH);
-    digitalWrite(green, LOW);
-    right();
-    delay(10);
-    while (leftVal >= THRESHOLD) {
-      leftVal = analogRead(leftSensor);
-      delay(10);
-    }
-    off();
-  }
-  // GO STRAIGHT
-  else if (rightVal <= THRESHOLD && leftVal <= THRESHOLD) {
-    digitalWrite(green, LOW);
-    digitalWrite(red, LOW);
-    forward();
-    //lastPathDetectionTime = millis();  // Update the last path detection time
-  }
-
-  // Serial.print("Distance: ");
-  // Serial.println(distance);
-
-  // if (distance >= 10) {
-  //   digitalWrite(red, HIGH);
-  //   digitalWrite(green, LOW);
-  // }
-  // else {
-  //   digitalWrite(green, HIGH);
-  //   digitalWrite(red, LOW);
-  // }
 
   if (distance <= 10) {
     put_it_in_reverse_terry();
