@@ -18,6 +18,8 @@
 float leftVal = 0;
 float rightVal = 0;
 float duration, distance;
+unsigned long lastPathDetectionTime = 0;
+const unsigned long TURN_AROUND_INTERVAL = 3000;
 
 void setup() {
   // pinMode(enableA, HIGH);
@@ -142,6 +144,7 @@ void loop() {
       delay(10);
     }
     off();
+    lastPathDetectionTime = millis();  // Update the last path detection time
   }
   // TAKE A LEFT TURN
   else if (leftVal >= THRESHOLD && rightVal < THRESHOLD) {
@@ -154,22 +157,23 @@ void loop() {
       delay(10);
     }
     off();
+    lastPathDetectionTime = millis();  // Update the last path detection time
   }
   // GO STRAIGHT
   else if (rightVal <= THRESHOLD && leftVal <= THRESHOLD) {
     digitalWrite(green, LOW);
     digitalWrite(red, LOW);
     forward();
-  }
-  //  else if (rightVal < THRESHOLD && leftVal < THRESHOLD)
-  //    //put_it_in_reverse_terry();
-  //    forward();
-  //  else {
-  //    digitalWrite(green, LOW);
-  //    digitalWrite(red, LOW);
-  //    off();
-  //  }
+    lastPathDetectionTime = millis();  // Update the last path detection time
 
+    // TURN AROUND (360) IF NO PATH DETECTED FOR MORE THAN 3 SECONDS
+    if (millis() - lastPathDetectionTime >= TURN_AROUND_INTERVAL) {
+      left();
+      delay(1000);  // Adjust the delay based on the time needed for a 360-degree turn
+      off();
+      lastPathDetectionTime = millis();  // Reset the timer after the turn around
+    }
+  }
 
 
   //  Serial.print("Distance: ");
