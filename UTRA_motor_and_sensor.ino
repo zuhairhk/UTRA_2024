@@ -18,21 +18,16 @@
 float leftVal = 0;
 float rightVal = 0;
 float duration, distance;
-//unsigned long lastPathDetectionTime = 0;
-//const unsigned long TURN_AROUND_INTERVAL = 3000;
 
 void setup() {
-  // pinMode(enableA, HIGH);
   pinMode(motorA1, OUTPUT);
   pinMode(motorA2, OUTPUT);
-  // pinMode(enableB, HIGH);
   pinMode(motorB1, OUTPUT);
   pinMode(motorB2, OUTPUT);
 
   digitalWrite(motorA1, LOW);
   digitalWrite(motorA2, LOW);
 
-  //pinMode(pinDig, INPUT);
   pinMode(leftSensor, INPUT);
   pinMode(green, OUTPUT);
   pinMode(red, OUTPUT);
@@ -100,16 +95,15 @@ void loop() {
   leftVal = analogRead(leftSensor);
   rightVal = analogRead(rightSensor);
 
-   digitalWrite(trigPin, LOW);
-   delayMicroseconds(2);
-  
-   digitalWrite(trigPin, HIGH);
-   delayMicroseconds(10);
-   digitalWrite(trigPin, LOW);
-  
-   duration = pulseIn(echoPin, HIGH);
-  
-   distance = (duration * 0.0343) / 2; //d=s/t, 0.0343 is speed of sound. 2 because wave travles to and back.
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration * 0.0343) / 2;  //d=s/t, 0.0343 is speed of sound. 2 because wave travles to and back.
+  duration = pulseIn(echoPin, HIGH, 10000);
+  distance = (duration * 0.0343) / 2;
 
   // TURN AROUND (360) IF NO PATH DETECTED FOR MORE THAN 3 SECONDS
   // if (millis() - lastPathDetectionTime >= TURN_AROUND_INTERVAL) {
@@ -153,10 +147,20 @@ void loop() {
     //lastPathDetectionTime = millis();  // Update the last path detection time
   }
 
-   Serial.print("Distance: ");
-   Serial.println(distance);
-  
-   if (distance <= 10) {
-     put_it_in_reverse_terry();
-   }
+  delay(100);
+  Serial.print("Distance: ");
+  Serial.println(distance);
+
+  // if (distance >= 10) {
+  //   digitalWrite(red, HIGH);
+  //   digitalWrite(green, LOW);
+  // }
+  // else {
+  //   digitalWrite(green, HIGH);
+  //   digitalWrite(red, LOW);
+  // }
+
+  //  if (distance <= 10) {
+  //    put_it_in_reverse_terry();
+  //  }
 }
