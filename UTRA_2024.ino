@@ -45,4 +45,8 @@ void loop() {
     digitalWrite(red, LOW);
   }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main
