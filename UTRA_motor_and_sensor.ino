@@ -82,7 +82,7 @@ void off() {
 void put_it_in_reverse_terry() {
   off();
   left();      // initiate the left turn
-  delay(900);  // adjust this delay to make a 180-degree turn (in milliseconds)
+  delay(1350);  // adjust this delay to make a 180-degree turn (in milliseconds)
   off();       // stop turning
 }
 
@@ -113,8 +113,8 @@ void loop() {
 
   // TAKE A RIGHT TURN
   if (rightVal >= THRESHOLD && leftVal < THRESHOLD) {
-    digitalWrite(red, HIGH);
-    digitalWrite(green, LOW);
+    digitalWrite(green, HIGH);
+    digitalWrite(red, LOW);
     left();
     delay(10);
     while (rightVal >= THRESHOLD) {
@@ -126,8 +126,8 @@ void loop() {
   }
   // TAKE A LEFT TURN
   else if (leftVal >= THRESHOLD && rightVal < THRESHOLD) {
-    digitalWrite(green, HIGH);
-    digitalWrite(red, LOW);
+    digitalWrite(red, HIGH);
+    digitalWrite(green, LOW);
     right();
     delay(10);
     while (leftVal >= THRESHOLD) {
@@ -137,6 +137,17 @@ void loop() {
     off();
     //lastPathDetectionTime = millis();  // Update the last path detection time
   }
+  else if (rightVal >= THRESHOLD && leftVal >= THRESHOLD) {
+    digitalWrite(red, HIGH);
+    digitalWrite(green, LOW);
+    right();
+    delay(10);
+    while (leftVal >= THRESHOLD) {
+      leftVal = analogRead(leftSensor);
+      delay(10);
+    }
+    off();
+  }
   // GO STRAIGHT
   else if (rightVal <= THRESHOLD && leftVal <= THRESHOLD) {
     digitalWrite(green, LOW);
@@ -145,9 +156,8 @@ void loop() {
     //lastPathDetectionTime = millis();  // Update the last path detection time
   }
 
-  delay(100);
-  Serial.print("Distance: ");
-  Serial.println(distance);
+  // Serial.print("Distance: ");
+  // Serial.println(distance);
 
   // if (distance >= 10) {
   //   digitalWrite(red, HIGH);
